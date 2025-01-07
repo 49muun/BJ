@@ -1,6 +1,6 @@
 import { AllPosts } from '../queries/posts'
 import Link from 'next/link'
-import {HygraphClient} from '@/utils/client'
+import {HygraphClient} from '../utils/client'
 async function getPosts() {
   const client = HygraphClient()
   const allPosts = await client.request(AllPosts)
@@ -33,8 +33,8 @@ export default async function Home({}) {
                 <dl>
                   <dt className="sr-only">Published on</dt>
                   <dd className="text-base leading-6 font-medium text-gray-500">
-                    <time dateTime={post.date}>
-                      {new Date(post.date).toLocaleDateString('pt-PT', {
+                    <time dateTime={post.data}>
+                      {new Date(post.data).toLocaleDateString('pt-PT', {
                         year: 'numeric',
                         month: 'short',
                         day: 'numeric'
@@ -49,12 +49,12 @@ export default async function Home({}) {
                         href={`/posts/${post.slug}`}
                         className="text-gray-900"
                       >
-                        {post.title}
+                        {post.titulo}
                       </Link>
                     </h2>
-                    {post.excerpt && (
+                    {post.exerto && (
                       <div className="prose max-w-none text-gray-500">
-                        {post.excerpt}
+                        {post.exerto}
                       </div>
                     )}
                   </div>
@@ -62,7 +62,7 @@ export default async function Home({}) {
                     <Link
                       href={`/posts/${post.slug}`}
                       className="text-purple-500 hover:text-purple-600"
-                      aria-label={`Read "${post.title}"`}
+                      aria-label={`Read "${post.titulo}"`}
                     >
                       Ler Mais &rarr;
                     </Link>

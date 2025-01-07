@@ -1,8 +1,8 @@
-import { SinglePage } from '@/queries/pages'
+import { SinglePage } from '../../queries/pages'
 import { RichText } from '@graphcms/rich-text-react-renderer'
 import { notFound } from 'next/navigation'
 import { draftMode } from 'next/headers'
-import { HygraphClient } from '@/utils/client'
+import { HygraphClient } from '../../utils/client'
 
 /**
  * Retrieves a page from Hygraph based on the given slug.
@@ -41,14 +41,14 @@ export async function generateMetadata({ params }) {
   if (!page) return notFound()
 
   return {
-    title: page?.seoOverride?.title || page.title,
-    description: page.seo?.description || page.description,
+    titulo: page?.seoOverride?.titulo || page.titulo,
+    descricao: page.seoOverride?.descricao || page.descricao,
     openGraph: {
-      images: [
+      imagem: [
         {
-          url: page?.seoOverride?.image?.url || page.coverImage?.url,
-          width: page?.seoOverride?.image?.width || page.coverImage?.width,
-          height: page?.seoOverride?.image?.height || page.coverImage?.height
+          url: page?.seoOverride?.imagem?.url || page.imagem?.url,
+          width: page?.seoOverride?.imagem?.width || page.imagem?.width,
+          height: page?.seoOverride?.imagem?.height || page.imagem?.height
         }
       ]
     }
@@ -74,15 +74,15 @@ export default async function Page({ params }) {
     <div className="divide-y divide-gray-200">
       <div className="pt-6 pb-8 space-y-2 md:space-y-5">
         <h1 className="text-3xl leading-9 font-extrabold text-gray-900 tracking-tight sm:text-4xl sm:leading-10 md:text-6xl md:leading-14">
-          {page.title}
+          {page.titulo}
         </h1>
-        {page.subtitle && (
-          <p className="text-lg leading-7 text-gray-500">{page.subtitle}</p>
+        {page.subtitulo && (
+          <p className="text-lg leading-7 text-gray-500">{page.subtitulo}</p>
         )}
       </div>
       <div className="pb-16 lg:pb-20">
         <div className="prose max-w-none pt-10 pb-8">
-          <RichText content={page.content.raw} />
+          <RichText content={page.conteudo.raw} />
         </div>
       </div>
     </div>

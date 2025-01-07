@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import { SingleNav } from '@/queries/navigations'
+import { SingleNav } from '../queries/navigations'
 
 /**
  * Fetches navigation links from Hygraph for a given navigation ID.

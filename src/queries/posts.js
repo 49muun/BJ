@@ -2,10 +2,10 @@ const AllPosts = `
   query AllPosts {
     posts(orderBy: publishedAt_DESC) {
       id
-      excerpt
+      exerto
       slug
-      title
-      date
+      titulo
+      data
     }
   }
 `
@@ -16,28 +16,28 @@ const SinglePost = `
       createdAt
       updatedAt
       publishedAt
-      title
+      titulo
       slug
-      date
-      excerpt
-      content {
+      data
+      exerto
+      conteudo {
         raw
         html
         markdown
         text
       }
-      coverImage {
+      imagem {
         url
         width
         height
       }
-      author {
-        ... on Author {
+      autor {
+        ... on autor {
           remoteTypeName: __typename
           remoteId: id
-          name
-          title
-          picture {
+          nome
+          titulo
+          imagem {
             url
             width
             height

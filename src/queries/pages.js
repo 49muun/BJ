@@ -3,7 +3,7 @@ const AllPages = `
     pages {
       id
       slug
-      title
+      titulo
     }
   }
 `
@@ -11,17 +11,17 @@ const AllPages = `
 const SinglePage = `
   query SinglePage($slug: String!) {
     page(where: { slug: $slug }) {
-      title
+      titulo
       seoOverride {
-        title
-        image {
+        titulo
+        imagem {
           height
           width
           url
         }
-        description
+        descricao
       }
-      content {
+      conteudo {
         html
         raw
       }
