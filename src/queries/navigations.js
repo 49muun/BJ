@@ -1,6 +1,6 @@
 const query = `
 query Test($navId:String!) {
-  navigation(where: {navId: $navId}) {
+  navegacao(where: {navId: $navId}) {
     id
     link {
       externalUrl
