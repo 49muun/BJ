@@ -1,57 +1,57 @@
-import Link from 'next/link'
-import { SingleNav } from '../queries/navigations'
+import Link from 'next/link';
+import { gql, GraphQLClient } from 'graphql-request';
 
-/**
- * Fetches navigation links from Hygraph for a given navigation ID.
- *
- * This function sends a GraphQL query to the Hygraph endpoint to retrieve
- * navigation links associated with the specified navId.
- *
- * @param {string} navId - The ID of the navigation to retrieve links for.
- * @returns {Promise<Array>} A promise that resolves to an array of navigation links.
- * @throws Will throw an error if the fetch request encounters any errors.
- */
-async function getNav(navId) {
-  const res = await fetch(process.env.HYGRAPH_ENDPOINT, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({
-      query: SingleNav,
-      variables: { navId: navId }
-    })
-  }).then((res) => 
-  res.json())
-  if (res.errors) {
-    console.error(res.errors)
-    throw new Error(res.errors[0].message)
+const HYGRAPH_ENDPOINT = process.env.HYGRAPH_ENDPOINT;
+const HYGRAPH_TOKEN = process.env.HYGRAPH_TOKEN;
+
+const client = new GraphQLClient(HYGRAPH_ENDPOINT, {
+  headers: {
+    authorization: `Bearer ${HYGRAPH_TOKEN}`,
+  },
+});
+
+const GET_NAV = gql`
+  query GetNavigation($navId: ID!) {
+    navegacao(where: { id: $navId }) {
+      link
+    }
   }
-  console.log(res.data.navegacao.link)
-  return res.data.navegacao.link
+`;
+
+async function getNav(navId) {
+  try {
+    const data = await client.request(GET_NAV, { navId });
+    if (data.errors) {
+      console.error('GraphQL errors:', data.errors);
+      throw new Error(data.errors[0].message);
+    }
+    console.log(data.navegacao.link);
+    return data.navegacao.link;
+  } catch (error) {
+    if (error.response) {
+      console.error('Error response:', error.response);
+    } else {
+      console.error('Error message:', error.message);
+    }
+    console.error('Error details:', error);
+    throw new Error('Failed to fetch navigation');
+  }
 }
 
-/**
- * A Next.js component that renders a list of links from a navigation.
- *
- * This component expects a single prop, `navId`, which is the ID of the navigation to
- * retrieve from Hygraph.
- *
- * @param {Object} props
- * @prop {string} navId - The ID of the navigation to retrieve from Hygraph
- */
 export default async function NavList({ navId }) {
-  const navItems = await getNav(navId)
-  return (
-    <>
-      {navItems.map((navItem) => {
-        const url = navItem?.externalUrl ? navItem.externalUrl : `/${navItem.page.slug}`
-        return (
-          <li key={navItem.id}>
-            <Link href={`${url}`}>{navItem.displayText}</Link>
-          </li>
-        )
-      })}
-    </>
-  )
+  try {
+    const navLinks = await getNav(navId);
+    return (
+      <nav>
+        {navLinks.map((link) => (
+          <Link key={link.id} href={link.url}>
+            {link.label}
+          </Link>
+        ))}
+      </nav>
+    );
+  } catch (error) {
+    console.error('Error in NavList component:', error);
+    return <div>Failed to load navigation links.</div>;
+  }
 }
