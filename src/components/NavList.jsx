@@ -25,7 +25,7 @@ async function getNav(navId) {
       console.error('GraphQL errors:', data.errors);
       throw new Error(data.errors[0].message);
     }
-    console.log(data.navegacao.link);
+    console.log('Fetched navigation:', data.navegacao.link);
     return data.navegacao.link;
   } catch (error) {
     if (error.response) {
@@ -40,7 +40,9 @@ async function getNav(navId) {
 
 export default async function NavList({ navId }) {
   try {
+    console.log('Fetching navigation with navId:', navId);
     const navLinks = await getNav(navId);
+    console.log('Fetched navigation links:', navLinks);
     return (
       <nav>
         {navLinks.map((link) => (

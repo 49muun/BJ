@@ -6,11 +6,14 @@ async function getPosts() {
   const client = HygraphClient();
   try {
     const allPosts = await client.request(AllPosts);
-    console.log(allPosts);
-    return allPosts.posts;
+    console.log('Fetched posts:', allPosts);
+    return allPosts.post; // Ensure this matches your schema
   } catch (error) {
     if (error.response) {
       console.error('Error response:', error.response);
+      console.error('Error status:', error.response.status);
+      console.error('Error headers:', error.response.headers);
+      console.error('Error data:', error.response.data);
     } else {
       console.error('Error message:', error.message);
     }
