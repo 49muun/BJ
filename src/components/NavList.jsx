@@ -27,8 +27,8 @@ async function getNav(navId) {
     console.error(res.errors)
     throw new Error(res.errors[0].message)
   }
-  console.log(res.data.navigation.link)
-  return res.data.navigation.link
+  console.log(res.data.navegacao.link)
+  return res.data.navegacao.link
 }
 
 /**
