@@ -25,6 +25,9 @@ async function getNav(navId) {
       console.error('GraphQL errors:', data.errors);
       throw new Error(data.errors[0].message);
     }
+    if (!data.navegacao) {
+      throw new Error('No navigation data found');
+    }
     console.log('Fetched navigation:', data.navegacao.link);
     return data.navegacao.link;
   } catch (error) {
